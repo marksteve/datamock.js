@@ -45,6 +45,15 @@ lastNames = [
 emailNames = (n.toLowerCase() for n in firstNames)
 emailDomains = (n.toLowerCase() for n in lastNames)
 emailTLD = ["org", "com", "net"]
+lorem = """
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel velit et massa
+ultricies viverra et eget nunc. Donec laoreet hendrerit sapien, eget rutrum
+lectus posuere vitae. Proin lobortis rhoncus enim, nec faucibus augue pharetra
+vel. Donec at nisi ligula, at gravida dui. Nulla sed sapien turpis, quis ornare
+nibh. Duis lacinia, leo non vehicula dapibus, nulla orci eleifend ligula, a
+molestie sapien odio et nisi. Pellentesque vel ligula sem. Maecenas auctor
+consectetur convallis.
+"""
 
 randChoice = (arr) ->
   arr[Math.floor(Math.random() * arr.length)]
@@ -98,6 +107,8 @@ $.fn.datamock = ->
           text = genName()
         when 'email'
           text = genEmail()
+        when 'lorem'
+          text = lorem
       $el.text(text)
 
     attribSel($(@), 'data-mock-choices').each ->
