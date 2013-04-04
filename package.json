@@ -1,0 +1,20 @@
+{
+  "name": "datamock",
+  "version": "0.0.1",
+  "description": "Adds mock data to your mockups",
+  "main": "datamock.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/marksteve/datamock.js.git"
+  },
+  "keywords": [
+    "mock",
+    "data",
+    "mockup"
+  ],
+  "author": "Mark Steve Samson <hello@marksteve.com>",
+  "license": "MIT"
+}
