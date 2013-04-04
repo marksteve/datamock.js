@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+<head>
+<title>datamock.js</title>
+<style>
+body, button {
+  font: 16px/1.5 Times, serif;
+}
+
+body {
+  background-color: #eee;
+  color: #111;
+  text-align: center;
+  margin: 0;
+  padding: 1.5em;
+}
+
+h1, h2, p, pre, ul {
+  margin: 0 0 1.5em 0;
+}
+
+h1 {
+  font-size: 200%;
+}
+
+h2 {
+  font-size: 150%;
+}
+
+pre {
+  background-color: white;
+  text-align: left;
+  display: inline-block;
+  padding: 1em;
+  border: 1px #eee solid;
+}
+
+.datamock-button {
+  font-size: 20;
+  font-weight: bold;
+  background-color: white;
+  border: 2px #111 solid;
+  line-height: 2;
+  padding: 0 10px;
+  cursor: pointer;
+  -webkit-transition: -webkit-transform 0.2s;
+  -webkit-transform: scale(1);
+  -webkit-backface-visibility: hidden;
+}
+
+.datamock-button:hover {
+  -webkit-transform: scale(1.05);
+}
+
+.pagination {
+  list-style: none;
+  padding: 0;
+}
+
+.pagination li {
+  display: inline-block;
+  margin: 0 1em;
+}
+
+.users {
+  list-style: none;
+  padding: 0;
+  display: inline-block;
+}
+
+.users li {
+  background-color: white;
+  line-height: 3;
+  margin-bottom: 0.5em;
+  box-shadow: 0 1px 5px 1px rgba(0, 0, 0, 0.2);
+  padding: 0 20px;
+  text-align: left;
+  cursor: default;
+  -webkit-transition: -webkit-transform 0.2s;
+  -webkit-transform: scale(1);
+  -webkit-backface-visibility: hidden;
+}
+
+.users li:hover {
+  -webkit-transform: scale(1.05);
+}
+
+.users li strong,
+.users li span,
+.users li a {
+  display: inline-block;
+}
+
+.users li p {
+  line-height: 1.5;
+  margin: 0;
+  padding-bottom: 1em;
+}
+
+.id {
+  width: 2em;
+}
+
+.name {
+  text-transform: uppercase;
+  width: 20em;
+  letter-spacing: 0.25em;
+}
+
+.email {
+  color: #999;
+  width: 15em;
+}
+
+.status {
+  width: 5em;
+}
+
+.action {
+  text-decoration: none;
+  border: 1px blue solid;
+  color: blue;
+  line-height: 1.5;
+  padding: 0 5px;
+}
+
+.action:hover {
+  background-color: blue;
+  color: white;
+}
+
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="datamock.min.js"></script>
+<script>
+  $(function() {
+    $('.datamock-button').on('click', function() {
+      $('body').datamock();
+    });
+  });
+</script>
+</head>
+<body>
+    <h1>datamock.js</h1>
+    <p>Add mock data to your mockups</p>
+    <h2>Demo</h2>
+    <div><pre>&lt;div class=&quot;demo&quot;&gt;
+  &lt;p data-mock=&quot;lorem&quot;&gt;Lorem ipsum here...&lt;/p&gt;
+  &lt;ul class=&quot;pagination&quot;&gt;
+    &lt;li data-mock-clone=&quot;10&quot; data-mock-clone-fixed=&quot;true&quot;&gt;
+      &lt;a href=&quot;#&quot; data-mock=&quot;id&quot;&gt;1&lt;/a&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;ul class=&quot;users&quot;&gt;
+    &lt;li data-mock-clone=&quot;10&quot;&gt;
+      &lt;div&gt;
+        &lt;span class=&quot;id&quot; data-mock=&quot;id&quot;&gt;1&lt;/span&gt;
+        &lt;strong class=&quot;name&quot; data-mock=&quot;name&quot;&gt;John Doe&lt;/strong&gt;
+        &lt;span class=&quot;email&quot; data-mock=&quot;email&quot;&gt;john@doe.me&lt;/span&gt;
+        &lt;span class=&quot;status&quot; data-mock-choices=&quot;Online,Busy,Away,Offline&quot;&gt;Online&lt;/span&gt;
+        &lt;a class=&quot;action&quot; href=&quot;#&quot; data-mock-choice=&quot;action&quot;&gt;Follow&lt;/a&gt;
+        &lt;a class=&quot;action&quot; href=&quot;#&quot; data-mock-choice=&quot;action&quot;&gt;Unfollow&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</pre></div>
+    <p>
+      <button class="datamock-button">$('.demo').datamock();</button>
+    </p>
+    <div class="demo">
+      <p data-mock="lorem">Lorem ipsum here...</p>
+      <ul class="pagination">
+        <li data-mock-clone="10" data-mock-clone-fixed="true">
+          <a href="#" data-mock="id">1</a>
+        </li>
+      </ul>
+      <ul class="users">
+        <li data-mock-clone="10">
+          <div>
+            <span class="id" data-mock="id">1</span>
+            <strong class="name" data-mock="name">John Doe</strong>
+            <span class="email" data-mock="email">john@doe.me</span>
+            <span class="status" data-mock-choices="Online,Busy,Away,Offline">Online</span>
+            <a class="action" href="#" data-mock-choice="action">Follow</a>
+            <a class="action" href="#" data-mock-choice="action">Unfollow</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+</body>
+</html>
