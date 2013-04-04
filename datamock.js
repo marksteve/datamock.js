@@ -54,7 +54,9 @@
 
   $.fn.datamock = function() {
     return $(this).each(function() {
-      $(attribSel($(this), 'data-mock-clone').get().reverse()).each(function() {
+      var $this;
+      $this = $(this);
+      $(attribSel($this, 'data-mock-clone').get().reverse()).each(function() {
         var $el, $last, $parent, clone, i, init, start, _i, _ref, _results;
         $el = $(this);
         clone = parseInt($el.data('mock-clone'), 10);
@@ -70,7 +72,9 @@
           start = 1;
           init = true;
         }
-        $el.attr('data-mock-id', start);
+        if (init) {
+          $el.attr('data-mock-id', start);
+        }
         start++;
         _results = [];
         for (i = _i = start, _ref = start + clone - (init != null ? init : {
@@ -80,12 +84,13 @@
         }
         return _results;
       });
-      attribSel($(this), 'data-mock').each(function() {
-        var $el, text;
+      attribSel($this, 'data-mock').each(function() {
+        var $el, mockId, text;
         $el = $(this);
+        mockId = $el.closest('[data-mock-id]').data('mock-id');
         switch ($el.data('mock')) {
           case 'id':
-            text = $el.closest('[data-mock-id]').data('mock-id');
+            text = mockId;
             break;
           case 'name':
             text = genName();
@@ -96,27 +101,34 @@
           case 'lorem':
             text = lorem;
         }
-        return $el.text(text);
+        $el.text(text);
+        if (mockId > 1) {
+          return $el.removeAttr('data-mock');
+        }
       });
-      attribSel($(this), 'data-mock-choices').each(function() {
+      attribSel($this, 'data-mock-choices').each(function() {
         var $el;
         $el = $(this);
-        return $el.text(randChoice($el.data('mock-choices').split(',')));
+        $el.text(randChoice($el.data('mock-choices').split(',')));
+        if ($el.closest('[data-mock-id]').data('mock-id') > 1) {
+          return $el.removeAttr('data-mock-choices');
+        }
       });
-      return attribSel($(this), 'data-mock-choice').show().each(function() {
+      return attribSel($this, 'data-mock-choice').show().each(function() {
         var $choice, $choices, $el, $siblings, choiceSel;
         $el = $(this);
-        if (!$el.is(':visible')) {
-          return;
+        if ($el.is(':visible')) {
+          choiceSel = "[data-mock-choice='" + ($el.data('mock-choice')) + "']:visible";
+          $siblings = $el.siblings(choiceSel);
+          if ($siblings.size() > 0) {
+            $choices = $el.add($siblings);
+            $choice = $(randChoice($choices.get()));
+            $choice.siblings(choiceSel).hide();
+          }
         }
-        choiceSel = "[data-mock-choice='" + ($el.data('mock-choice')) + "']:visible";
-        $siblings = $el.siblings(choiceSel);
-        if (!($siblings.size() > 0)) {
-          return;
+        if ($el.closest('[data-mock-id]').data('mock-id') > 1) {
+          return $el.removeAttr('data-mock-choice');
         }
-        $choices = $el.add($siblings);
-        $choice = $(randChoice($choices.get()));
-        return $choice.siblings(choiceSel).hide();
       });
     });
   };
