@@ -40,18 +40,18 @@
     return "" + (randChoice(emailNames)) + "@" + (randChoice(emailDomains)) + "." + (randChoice(emailTLD));
   };
 
-  attribSel = function($sel, sel) {
-    sel = "[" + sel + "]";
-    if ($sel.is(sel)) {
-      return $sel.add($sel.find(sel));
+  attribSel = function($sel, attr) {
+    attr = "[" + attr + "]";
+    if ($sel.is(attr)) {
+      $sel.add($sel.find(attr));
     } else {
-      return $sel = $sel.find(sel);
+      $sel = $sel.find(attr);
     }
+    return $sel;
   };
 
   $.fn.datamock = function() {
     return $(this).each(function() {
-      var id;
       attribSel($(this), 'data-mock-clone').each(function() {
         var $el, $parent, clone, i, _i, _ref, _results;
         $el = $(this);
@@ -64,7 +64,6 @@
         }
         return _results;
       });
-      id = 1;
       attribSel($(this), 'data-mock').each(function() {
         var $el, text;
         $el = $(this);

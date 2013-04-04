@@ -55,15 +55,18 @@ genName = ->
 genEmail = ->
   "#{randChoice(emailNames)}@#{randChoice(emailDomains)}.#{randChoice(emailTLD)}"
 
-attribSel = ($sel, sel) ->
-  sel = "[#{sel}]"
-  if $sel.is(sel)
-    $sel.add($sel.find(sel))
+attribSel = ($sel, attr) ->
+  attr = "[#{attr}]"
+  if $sel.is(attr)
+    $sel.add($sel.find(attr))
   else
-    $sel = $sel.find(sel)
+    $sel = $sel.find(attr)
+  $sel
 
 $.fn.datamock = ->
+
   $(@).each ->
+
     attribSel($(@), 'data-mock-clone').each ->
       $el = $(@)
       clone = parseInt($el.data('mock-clone'), 10)
@@ -71,7 +74,7 @@ $.fn.datamock = ->
       $el.data('mock-id', 1)
       for i in [2...clone + 1]
         $parent.append($el.clone().data('mock-id', i))
-    id = 1
+
     attribSel($(@), 'data-mock').each ->
       $el = $(@)
       switch $el.data('mock')
@@ -82,9 +85,11 @@ $.fn.datamock = ->
         when 'email'
           text = genEmail()
       $el.text(text)
+
     attribSel($(@), 'data-mock-choices').each ->
       $el = $(@)
       $el.text(randChoice($el.data('mock-choices').split(',')))
+
     attribSel($(@), 'data-mock-choice').each ->
       $el = $(@)
       choiceSel = "[data-mock-choice='#{$el.data('mock-choice')}']"
