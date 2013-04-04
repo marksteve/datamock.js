@@ -115,9 +115,14 @@ $.fn.datamock = ->
       $el = $(@)
       $el.text(randChoice($el.data('mock-choices').split(',')))
 
-    attribSel($(@), 'data-mock-choice').each ->
+    attribSel($(@), 'data-mock-choice').show().each ->
       $el = $(@)
-      choiceSel = "[data-mock-choice='#{$el.data('mock-choice')}']"
-      $sel = $el.add($el.siblings(choiceSel))
-      $el = $sel.eq(Math.floor(Math.random() * $sel.size()))
-      $el.siblings(choiceSel).remove()
+      unless $el.is(':visible')
+        return
+      choiceSel = "[data-mock-choice='#{$el.data('mock-choice')}']:visible"
+      $siblings = $el.siblings(choiceSel)
+      unless $siblings.size() > 0
+        return
+      $choices = $el.add($siblings)
+      $choice = $(randChoice($choices.get()))
+      $choice.siblings(choiceSel).hide()

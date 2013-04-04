@@ -103,13 +103,20 @@
         $el = $(this);
         return $el.text(randChoice($el.data('mock-choices').split(',')));
       });
-      return attribSel($(this), 'data-mock-choice').each(function() {
-        var $el, $sel, choiceSel;
+      return attribSel($(this), 'data-mock-choice').show().each(function() {
+        var $choice, $choices, $el, $siblings, choiceSel;
         $el = $(this);
-        choiceSel = "[data-mock-choice='" + ($el.data('mock-choice')) + "']";
-        $sel = $el.add($el.siblings(choiceSel));
-        $el = $sel.eq(Math.floor(Math.random() * $sel.size()));
-        return $el.siblings(choiceSel).remove();
+        if (!$el.is(':visible')) {
+          return;
+        }
+        choiceSel = "[data-mock-choice='" + ($el.data('mock-choice')) + "']:visible";
+        $siblings = $el.siblings(choiceSel);
+        if (!($siblings.size() > 0)) {
+          return;
+        }
+        $choices = $el.add($siblings);
+        $choice = $(randChoice($choices.get()));
+        return $choice.siblings(choiceSel).hide();
       });
     });
   };
