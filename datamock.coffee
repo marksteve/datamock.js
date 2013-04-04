@@ -67,19 +67,33 @@ $.fn.datamock = ->
 
   $(@).each ->
 
-    attribSel($(@), 'data-mock-clone').each ->
+    # We reverse results to traverse from inner clones moving up
+    $(attribSel($(@), 'data-mock-clone').get().reverse()).each ->
       $el = $(@)
       clone = parseInt($el.data('mock-clone'), 10)
       $parent = $el.parent()
-      $el.data('mock-id', 1)
-      for i in [2...clone + 1]
-        $parent.append($el.clone().data('mock-id', i))
+      $last = $el.siblings('[data-mock-id]').last()
+      if $last.size() == 1
+        if $el.data('mock-clone-fixed')
+          return
+        start = parseInt($last.data('mock-id'), 10)
+        init = false
+      else
+        start = 1
+        init = true
+      $el.attr('data-mock-id', start)
+      start++
+      for i in [start...start + clone - (init ? 1 : 0)]
+        $parent.append($el
+          .clone()
+          .attr('data-mock-id', i)
+          .removeAttr('data-mock-clone'))
 
     attribSel($(@), 'data-mock').each ->
       $el = $(@)
       switch $el.data('mock')
         when 'id'
-          text = $el.closest('[data-mock-clone]').data('mock-id')
+          text = $el.closest('[data-mock-id]').data('mock-id')
         when 'name'
           text = genName()
         when 'email'

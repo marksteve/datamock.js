@@ -52,15 +52,29 @@
 
   $.fn.datamock = function() {
     return $(this).each(function() {
-      attribSel($(this), 'data-mock-clone').each(function() {
-        var $el, $parent, clone, i, _i, _ref, _results;
+      $(attribSel($(this), 'data-mock-clone').get().reverse()).each(function() {
+        var $el, $last, $parent, clone, i, init, start, _i, _ref, _results;
         $el = $(this);
         clone = parseInt($el.data('mock-clone'), 10);
         $parent = $el.parent();
-        $el.data('mock-id', 1);
+        $last = $el.siblings('[data-mock-id]').last();
+        if ($last.size() === 1) {
+          if ($el.data('mock-clone-fixed')) {
+            return;
+          }
+          start = parseInt($last.data('mock-id'), 10);
+          init = false;
+        } else {
+          start = 1;
+          init = true;
+        }
+        $el.attr('data-mock-id', start);
+        start++;
         _results = [];
-        for (i = _i = 2, _ref = clone + 1; 2 <= _ref ? _i < _ref : _i > _ref; i = 2 <= _ref ? ++_i : --_i) {
-          _results.push($parent.append($el.clone().data('mock-id', i)));
+        for (i = _i = start, _ref = start + clone - (init != null ? init : {
+          1: 0
+        }); start <= _ref ? _i < _ref : _i > _ref; i = start <= _ref ? ++_i : --_i) {
+          _results.push($parent.append($el.clone().attr('data-mock-id', i).removeAttr('data-mock-clone')));
         }
         return _results;
       });
@@ -69,7 +83,7 @@
         $el = $(this);
         switch ($el.data('mock')) {
           case 'id':
-            text = $el.closest('[data-mock-clone]').data('mock-id');
+            text = $el.closest('[data-mock-id]').data('mock-id');
             break;
           case 'name':
             text = genName();
