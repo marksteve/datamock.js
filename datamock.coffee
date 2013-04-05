@@ -72,66 +72,74 @@ attribSel = ($sel, attr) ->
     $sel = $sel.find(attr)
   $sel
 
+mockValues = ->
+  $el = $(@)
+  switch $el.data('mock')
+    when 'id'
+      text = $el.closest('[data-mock-id]').data('mock-id')
+    when 'name'
+      text = genName()
+    when 'email'
+      text = genEmail()
+    when 'lorem'
+      text = lorem
+  $el.text(text)
+  $el.removeAttr('data-mock')
+
+mockChoices = ->
+  $el = $(@)
+  $el.text(randChoice($el.data('mock-choices').split(',')))
+  $el.removeAttr('data-mock-choices')
+
+mockChoice = ->
+  $el = $(@)
+  if $el.is(':visible')
+    choiceSel = "[data-mock-choice='#{$el.data('mock-choice')}']:visible"
+    $siblings = $el.siblings(choiceSel)
+    if $siblings.size() > 0
+      $choices = $el.add($siblings)
+      $choice = $(randChoice($choices.get()))
+      $choice.siblings(choiceSel).hide()
+  $el.removeAttr('data-mock-choice')
+
+mock = ($el) ->
+  attribSel($el, 'data-mock').each(mockValues)
+  attribSel($el, 'data-mock-choices').each(mockChoices)
+  attribSel($el, 'data-mock-choice').show().each(mockChoice)
+
+cache = {}
+
 $.fn.datamock = ->
 
   $(@).each ->
 
     $this = $(@)
 
-    # We reverse results to traverse from inner clones moving up
-    $(attribSel($this, 'data-mock-clone').get().reverse()).each ->
-      $el = $(@)
-      clone = parseInt($el.data('mock-clone'), 10)
-      $parent = $el.parent()
-      $last = $el.siblings('[data-mock-id]').last()
-      if $last.size() == 1
-        if $el.data('mock-clone-fixed')
-          return
-        start = parseInt($last.data('mock-id'), 10)
-        init = false
-      else
-        start = 1
-        init = true
-      if init
-        $el.attr('data-mock-id', start)
-      start++
-      for i in [start...start + clone - (init ? 1 : 0)]
-        $parent.append($el
+    unless cache[$this]
+      cache[$this] = []
+      # We reverse results to traverse from inner clones moving up
+      $(attribSel($this, 'data-mock-clone').get().reverse()).each ->
+        $el = $(@)
+        $parent = $el.parent()
+        cache[$this].push([$parent, $el.remove()])
+
+    # Mock container
+    mock($this)
+
+    # Mock clones
+    for $pair in cache[$this]
+      $parent = $pair[0]
+      $template = $pair[1]
+      clone = parseInt($template.data('mock-clone'), 10)
+      cloneCount = $template.data('mock-clone-count') or 0
+      if cloneCount >= clone and $template.data('mock-clone-fixed')
+        continue
+      for i in [1..clone]
+        $clone = $template
           .clone()
-          .attr('data-mock-id', i)
-          .removeAttr('data-mock-clone'))
-
-    attribSel($this, 'data-mock').each ->
-      $el = $(@)
-      mockId = $el.closest('[data-mock-id]').data('mock-id')
-      switch $el.data('mock')
-        when 'id'
-          text = mockId
-        when 'name'
-          text = genName()
-        when 'email'
-          text = genEmail()
-        when 'lorem'
-          text = lorem
-      $el.text(text)
-      if mockId > 1
-        $el.removeAttr('data-mock')
-
-    attribSel($this, 'data-mock-choices').each ->
-      $el = $(@)
-      $el.text(randChoice($el.data('mock-choices').split(',')))
-      if $el.closest('[data-mock-id]').data('mock-id') > 1
-        $el.removeAttr('data-mock-choices')
-
-    attribSel($this, 'data-mock-choice').show().each ->
-      $el = $(@)
-      if $el.is(':visible')
-        choiceSel = "[data-mock-choice='#{$el.data('mock-choice')}']:visible"
-        $siblings = $el.siblings(choiceSel)
-        if $siblings.size() > 0
-          $choices = $el.add($siblings)
-          $choice = $(randChoice($choices.get()))
-          $choice.siblings(choiceSel).hide()
-      if $el.closest('[data-mock-id]').data('mock-id') > 1
-        $el.removeAttr('data-mock-choice')
-
+          .removeAttr('data-mock-clone')
+          .attr('data-mock-id', cloneCount + i)
+        $parent.append($clone) # Append first!
+        mock($clone)
+      cloneCount += clone
+      $template.data('mock-clone-count', cloneCount)
