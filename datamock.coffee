@@ -93,14 +93,13 @@ mockChoices = ->
 
 mockChoice = ->
   $el = $(@)
-  if $el.is(':visible')
-    choiceSel = "[data-mock-choice='#{$el.data('mock-choice')}']:visible"
-    $siblings = $el.siblings(choiceSel)
-    if $siblings.size() > 0
-      $choices = $el.add($siblings)
-      $choice = $(randChoice($choices.get()))
-      $choice.siblings(choiceSel).hide()
-  $el.removeAttr('data-mock-choice')
+  choiceSel = "[data-mock-choice='#{$el.data('mock-choice')}']"
+  $siblings = $el.siblings(choiceSel)
+  if $siblings.size() > 0
+    $choices = $el.add($siblings)
+    $choice = $(randChoice($choices.get()))
+    $choice.siblings(choiceSel).remove()
+    $choice.removeAttr('data-mock-choice')
 
 mock = ($el) ->
   attribSel($el, 'data-mock').each(mockValues)

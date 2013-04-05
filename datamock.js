@@ -82,16 +82,14 @@
   mockChoice = function() {
     var $choice, $choices, $el, $siblings, choiceSel;
     $el = $(this);
-    if ($el.is(':visible')) {
-      choiceSel = "[data-mock-choice='" + ($el.data('mock-choice')) + "']:visible";
-      $siblings = $el.siblings(choiceSel);
-      if ($siblings.size() > 0) {
-        $choices = $el.add($siblings);
-        $choice = $(randChoice($choices.get()));
-        $choice.siblings(choiceSel).hide();
-      }
+    choiceSel = "[data-mock-choice='" + ($el.data('mock-choice')) + "']";
+    $siblings = $el.siblings(choiceSel);
+    if ($siblings.size() > 0) {
+      $choices = $el.add($siblings);
+      $choice = $(randChoice($choices.get()));
+      $choice.siblings(choiceSel).remove();
+      return $choice.removeAttr('data-mock-choice');
     }
-    return $el.removeAttr('data-mock-choice');
   };
 
   mock = function($el) {
