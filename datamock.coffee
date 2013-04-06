@@ -83,7 +83,11 @@ mockValues = ->
       text = genEmail()
     when 'lorem'
       text = lorem
-  $el.text(text)
+  switch
+    when $el.is('input[type=textbox]')
+      $el.val(text)
+    else
+      $el.text(text)
   $el.removeAttr('data-mock')
 
 mockChoices = ->

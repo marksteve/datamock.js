@@ -68,7 +68,13 @@
       case 'lorem':
         text = lorem;
     }
-    $el.text(text);
+    switch (false) {
+      case !$el.is('input[type=textbox]'):
+        $el.val(text);
+        break;
+      default:
+        $el.text(text);
+    }
     return $el.removeAttr('data-mock');
   };
 
