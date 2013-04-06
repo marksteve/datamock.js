@@ -62,6 +62,11 @@ pre {
   margin: 0 1em;
 }
 
+.form strong {
+  display: inline-block;
+  width: 5em;
+}
+
 .users {
   list-style: none;
   padding: 0;
@@ -95,6 +100,10 @@ pre {
   line-height: 1.5;
   margin: 0;
   padding-bottom: 1em;
+}
+
+.select {
+  margin-right: 1em;
 }
 
 .id {
@@ -146,6 +155,16 @@ pre {
     <h2>Demo</h2>
     <div><pre>&lt;div class=&quot;demo&quot;&gt;
   &lt;p data-mock=&quot;lorem&quot;&gt;Lorem ipsum here...&lt;/p&gt;
+  &lt;form class=&quot;form&quot;&gt;
+    &lt;p&gt;
+      &lt;strong&gt;Name&lt;/strong&gt;
+      &lt;input type=&quot;textbox&quot; data-mock=&quot;name&quot;&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;strong&gt;Email&lt;/strong&gt;
+      &lt;input type=&quot;textbox&quot; data-mock=&quot;email&quot;&gt;
+    &lt;/p&gt;
+  &lt;/form&gt;
   &lt;ul class=&quot;pagination&quot;&gt;
     &lt;li data-mock-clone=&quot;10&quot; data-mock-clone-fixed=&quot;true&quot;&gt;
       &lt;a href=&quot;#&quot; data-mock=&quot;id&quot;&gt;1&lt;/a&gt;
@@ -169,6 +188,16 @@ pre {
     </p>
     <div class="demo">
       <p data-mock="lorem">Lorem ipsum here...</p>
+      <form class="form">
+        <p>
+          <strong>Name</strong>
+          <input type="textbox" data-mock="name">
+        </p>
+        <p>
+          <strong>Email</strong>
+          <input type="textbox" data-mock="email">
+        </p>
+      </form>
       <ul class="pagination">
         <li data-mock-clone="10" data-mock-clone-fixed="true">
           <a href="#" data-mock="id">1</a>
